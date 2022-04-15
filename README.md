@@ -1,7 +1,7 @@
 # Programming_exam1
-プログラム試験問題の回答
-現在問３まで実装済み
-本プログラムはPython3とpandasを使用
+プログラム試験問題の回答  
+現在問３まで実装済み  
+本プログラムはPython3とpandasを使用  
 
 # Requirement
   
@@ -25,7 +25,7 @@ $ python main.py
 | N,m,t | パラメータ |
 
 # Description
-本プログラムはcsvファイルからデータを読みとり，故障期間・過負荷期間を出力する．
+本プログラムはcsvファイルからデータを読みとり，故障期間・過負荷期間を出力する．  
 故障期間・過負荷期間は以下のように出力される
 
 ```
@@ -61,12 +61,13 @@ address: a
   address  overload_starttime overload_period
 4       a 2020-10-19 13:03:10 0 days 00:01:00
 ```
-addressは当該IPアドレス，failure_starttimeは故障開始時間，failure_periodは故障期間を表す．
+addressは当該IPアドレス，failure_starttimeは故障開始時間，failure_periodは故障期間を表す．  
 同様に，overload_starttimeは過負荷開始時間，overload_periodは過負荷期間を表す．
 
 # Test
 以下に作成したテストケースとその実行結果を示す．
-``` log1.csv
+``` 
+log1.csv
 20201019133124,10.20.30.1/16,2
 20201019133125,10.20.30.2/16,1
 20201019133134,192.168.1.1/24,10
@@ -79,7 +80,8 @@ addressは当該IPアドレス，failure_starttimeは故障開始時間，failur
 20201019133325,10.20.30.2/16,2
 ```
 
-```python3 main.py --problem 1 --file ./log/log1.csv
+```
+$ python3 main.py --problem 1 --file ./log/log1.csv
                  date         address time
 0 2020-10-19 13:31:24   10.20.30.1/16    2
 4 2020-10-19 13:32:24   10.20.30.1/16  522
@@ -117,7 +119,8 @@ address: 192.168.1.2/24
 3  10.20.30.1/16 2020-10-19 13:33:24         0 days
 ```
 
-```log2.csv
+```
+log2.csv
 20201019130010,a,1
 20201019130110,a,-
 20201019130210,a,3
@@ -131,7 +134,8 @@ address: 192.168.1.2/24
 20201019131010,a,3
 ```
 
-``` python3 main.py --problem 2 --N 2 --file ./log/log2.csv
+``` 
+$ python3 main.py --problem 2 --N 2 --file ./log/log2.csv
                   date address time
 0  2020-10-19 13:00:10       a    1
 1  2020-10-19 13:01:10       a    -
@@ -163,7 +167,8 @@ address: a
 10       a 2020-10-19 13:07:10 0 days 00:03:00
 ```
 
-```log3.csv
+```
+log3.csv
 20201019130010,a,1
 20201019130110,a,3
 20201019130210,a,3
@@ -177,7 +182,8 @@ address: a
 20201019131010,a,300
 ```
 
-```python3 main.py --problem 3 --N 1 --m 2 --t 10 --file ./log/log3.csv
+```
+$ python3 main.py --problem 3 --N 1 --m 2 --t 10 --file ./log/log3.csv
                   date address time
 0  2020-10-19 13:00:10       a    1
 1  2020-10-19 13:01:10       a    3
