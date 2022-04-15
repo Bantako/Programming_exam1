@@ -1,7 +1,9 @@
 import csv
 import pandas as pd
 import numpy as np
+import argparse
 import warnings
+import sys
 
 TIMEOUT = 4000 
 warnings.simplefilter('ignore')
@@ -38,17 +40,14 @@ def add_average_time(df, m=3):
 def get_overload_time(df, m=3, t=10):
     df = add_average_time(df, m)
     df = count_continuous_values(df[m-1:].copy(), "average_time", time=t)
-    print(df)
     df['failure_time'] = pd.NaT
     df.at[0, 'failure_time'] = "19700101000000" # 番兵
     df.loc[df['average_time_counum'] == 1, 'failure_time'] = df['date']
     df['failure_time'].ffill(inplace=True)
     
     index = (df['average_time_counum'] == 0) & (df['average_time_counum'].shift(1) >= 1)
-    print(df[index]['date'])
-    print(df[index]['failure_time'])
     sub_time = df[index]['date'] - df[index]['failure_time']
-    print(sub_time)
+    # print(sub_time)
     address = df[index]['address']
     return pd.DataFrame({'address': address, 'overload_starttime': df[index]['failure_time'], 'overload_period': sub_time})
 
@@ -96,33 +95,28 @@ def problem3(df, N=2, m=3, t=10):
     print(overload_df)
 
 if __name__ == '__main__':
-    filepath = './log/log3.csv'
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--problem', default=1, type=int)
+    parser.add_argument('--file', default='./log/log1.csv')
+    parser.add_argument('--N', default=2, type=int)
+    parser.add_argument('--m', default=3, type=int)
+    parser.add_argument('--t', default=10, type=int)
+    
+    args = parser.parse_args()
+
+    filepath = args.file
+
     # date = 'YYYYMMDDhhmmss'
     df = pd.read_csv(filepath, names=('date', 'address', 'time'), parse_dates=['date'])       
     # pd.to_datetime(df['date'], format="%Y%m%d%H%M%S")
     df = df.sort_values(['address', 'date'])
     print(df)
+    
+    if args.problem == 1:
+        problem1(df)
+    elif args.problem == 2:
+        problem2(df, N=args.N)
+    elif args.problem == 3:
+        problem3(df, N=args.N, m=args.m, t=args.t)
 
-    # problem1(df)
-    # problem2(df, N=2)
-    problem3(df, N=2, m=3, t=10)
-
-'''
-    for address, sdf in df.groupby('address'):
-        print('address:', address)
-        print(sdf)
-        print()
-
-        count_continuous_values(sdf, 'time')
-        print(sdf)
-        print()
-
-        df2 = get_overload_time(sdf)
-        print(df2)
-
-        add_failure_time(sdf)
-        print(sdf)
-
-        df2 = get_failure_time(sdf, 1)
-        print(df2)
-'''
